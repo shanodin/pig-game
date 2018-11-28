@@ -7,30 +7,27 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 */
 
-var scores, roundScore, activePlayer, gamePlaying, previousRoll;
+var scores, roundScore, activePlayer, gamePlaying;
 
 init();
 
 document.querySelector('.btn-roll').addEventListener('click', function () {
     if (gamePlaying) {
         var dice1 = Math.floor(Math.random() * 6) + 1;
+        var dice2 = Math.floor(Math.random() * 6) + 1;
 
         document.getElementById('dice-1').style.display = "block";
-        document.getElementById('dice-2').style.display = "none";
+        document.getElementById('dice-2').style.display = "block";
         
         document.getElementById('dice-1').src = 'dice-' + dice1 + '.png';
+        document.getElementById('dice-2').src = 'dice-' + dice2 + '.png';
 
-        if (dice1 === 6 && previousRoll === 6) {
-            scores[activePlayer] = 0;
-            document.querySelector('#score-' + activePlayer).textContent = 0;
-            nextPlayer();
-        } else if (dice1 !== 1) {
-            roundScore += dice1;
+        if (dice1 !== 1 && dice2 !== 1) {
+            roundScore += dice1 + dice2;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
             nextPlayer();
         }
-        previousRoll = dice1;
     }
 });
 
@@ -51,7 +48,7 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
         if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'Winner!'
             document.getElementById('dice-1').style.display = "none";
-            document.getElementById('dice-2').style.display = "none";            
+            document.getElementById('dice-2').style.display = "none";
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
             gamePlaying = false;
